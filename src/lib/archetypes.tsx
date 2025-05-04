@@ -1,6 +1,6 @@
 import React from "react";
 
-export interface PracticalApplications {
+export interface Applications {
   growth: string[];
   collaboration: string[];
   career: string[];
@@ -14,7 +14,7 @@ export interface Archetype {
   challenges: string[];
   recommendations: string[];
   avatar: React.ReactNode;
-  applications: PracticalApplications;
+  applications: Applications;
 }
 
 export const archetypes: Archetype[] = [
@@ -55,24 +55,40 @@ export const archetypes: Archetype[] = [
     ],
     applications: {
       growth: [
-        // Cognitive‐Experiential Self-Theory suggests alternating schema-driven planning with free-form ideation
-        "Schedule regular “blue-sky” brainstorming sessions followed by structured feasibility reviews (Epstein, 1994).",
-        // Self-Determination Theory: support autonomy in idea generation
-        "Use autonomy-supportive tools (e.g., mind-mapping software) to explore ideas before committing to details (Ryan & Deci, 2000).",
-        // Metacognitive strategy: reflect on idea volume vs. execution
-        "At week’s end, journal which ideas were acted upon versus shelved—helps calibrate your innovator’s impulse (Schraw & Dennison, 1994).",
+        // Epstein’s Cognitive-Experiential Self-Theory
+        "Alternate “blue-sky” ideation phases with analytical reality checks to balance creativity and feasibility (Epstein, 1994).",
+        // Self-Determination Theory
+        "Use autonomy-supportive framing (“How might you…?”) to fuel intrinsic motivation for ideation (Ryan & Deci, 2000).",
+        // Metacognition research (Schraw & Dennison, 1994)
+        "Keep a weekly journal: note which ideas advanced vs. stalled to refine idea-to-action ratios.",
+        // Psychological distancing
+        "Use “third-person self-talk” when evaluating big ideas to reduce bias and over-optimism (Kross et al., 2014).",
+        // Chunking strategy
+        "Break visionary concepts into 3–5 actionable milestones to reduce overwhelm (Miller, 1956).",
       ],
       collaboration: [
-        // Complementary roles: pair with a detail-oriented partner
-        "Team up with an Integrator or Guardian who excels at follow-through and operational detail (Belbin Team Roles).",
-        // Use “pitch & pull” communication
-        "Lead with compelling vision statements, then elicit critiques to ground ideas in practical constraints (Kotter, 1996).",
+        // Belbin Team Roles
+        "Pair with an Integrator or Guardian who naturally handles detail and follow-through (Belbin, 2010).",
+        // Kotter’s change model
+        "Lead with a “vision rally,” then establish concrete “short-term wins” to maintain momentum (Kotter, 1996).",
+        // Nolan’s “pitch and pull”
+        "Frame bold ideas (“pitch”), then solicit structured feedback (“pull”) to refine and align (Nolan, 2005).",
+        // Shared mental models
+        "Co-create simple visual roadmaps so all team members see both the big picture and next steps (Mathieu et al., 2000).",
+        // Psychological safety
+        "Foster an environment where “wild ideas” are welcomed before feasibility is critiqued (Edmondson, 1999).",
       ],
       career: [
-        // Strategic foresight roles emphasize long-term perspective
-        "Pursue roles in R&D, corporate strategy, or innovation labs where big-picture thinking is prized (O’Connor & McDermott, 2004).",
-        // Advisory or board positions allow high-level impact
-        "Consider advisory board or thought-leadership positions to shape direction without day-to-day execution.",
+        // Corporate foresight
+        "Seek roles in strategic foresight or innovation labs, where big-picture thinking is core (O’Connor & McDermott, 2004).",
+        // Advisory & board work
+        "Consider non-executive directorships to leverage vision without day-to-day operations.",
+        // Entrepreneurship
+        "Found or join early-stage ventures where ideation drives value creation.",
+        // Futures research
+        "Explore careers in think-tanks or policy institutes focused on long-range scenarios.",
+        // Thought leadership
+        "Publish white papers or give keynote talks—your visionary insights become organizational compass points.",
       ],
     },
   },
@@ -113,22 +129,40 @@ export const archetypes: Archetype[] = [
     ],
     applications: {
       growth: [
-        // Dual-Process Theory: alternate analytical and creative modes
-        "Block dedicated “divergent” time for ideation, then switch to “convergent” time for analysis (Stanovich & West, 2000).",
-        // Lean Startup methodology
-        "Adopt rapid-prototyping (MVP) cycles to validate ideas quickly and reduce perfectionism (Ries, 2011).",
+        // Dual-Process Theory
+        "Alternate structured problem-solving blocks with unconstrained brainstorming to optimize creativity (Stanovich & West, 2000).",
+        // Lean Startup / Ries (2011)
+        "Adopt MVP cycles: build → measure → learn to validate solutions rapidly and avoid perfectionism.",
+        // Cognitive load theory
+        "Use checklists to free working memory during complex analyses (Sweller, 1988).",
+        // SCAMPER technique
+        "Regularly apply SCAMPER (Substitute, Combine, Adapt…) to existing processes for systematic innovation (Michalko, 2006).",
+        // Time-boxing
+        "Set fixed time slots for deep analysis vs. creative play to prevent overanalysis.",
       ],
       collaboration: [
-        // Leverage collective intelligence
-        "Run structured ideation workshops (e.g., SCAMPER technique) with Visionaries to spark novel solutions (Michalko, 2006).",
-        // Use process mapping
-        "Document and share optimized workflows to help teams adopt improvements seamlessly (Hammer & Champy, 1993).",
+        // Collective intelligence
+        "Host cross-functional ideation sessions using structured frameworks (e.g., “brainwriting”) to tap diverse expertise (Woolley et al., 2010).",
+        // Process documentation
+        "Publish clear process maps (SIPOC) so teams can adopt improvements consistently (Hammer & Champy, 1993).",
+        // Rapid prototyping workshops
+        "Facilitate hands-on prototyping jams where users co-design under your guidance.",
+        // Feedback loops
+        "Implement weekly “innovation stand-ups” to iterate fast and share learnings.",
+        // Gamification
+        "Use simple point or badge systems to reward rapid idea contributions.",
       ],
       career: [
-        // Product design and process engineering
-        "Look for roles in UX/UI, operations, or process engineering where structured creativity drives impact.",
-        // Continuous improvement functions
-        "Consider Six Sigma or Agile coaching positions to blend rigor with innovation.",
+        // Product management
+        "Roles where you define MVP features and iterate based on data.",
+        // UX/UI design
+        "Blend research, prototyping, and analysis to craft user-centered experiences.",
+        // Process engineering
+        "Functions like Six Sigma or Kaizen coaching leverage your structured creativity.",
+        // R&D engineering
+        "Labs or hi-tech incubators value your mix of rigor and innovation.",
+        // Innovation consulting
+        "Help organizations implement systematic idea pipelines and scaling.",
       ],
     },
   },
@@ -166,22 +200,40 @@ export const archetypes: Archetype[] = [
     ],
     applications: {
       growth: [
-        // Transformational leadership practice
-        "Practice articulating a clear vision with “Why” and “How” to inspire buy-in (Bass & Avolio, 1994).",
-        // Emotional intelligence training
-        "Develop active listening and empathy through structured EI workshops to mitigate perceived dominance (Goleman, 1998).",
+        // Transformational leadership (Bass & Avolio, 1994)
+        "Practice crafting inspiring vision statements that connect to team values.",
+        // Emotional Intelligence (Goleman, 1998)
+        "Engage in EI workshops to improve empathy and reduce perceived authoritarianism.",
+        // Mindful leadership
+        "Incorporate brief daily mindfulness breaks to lower stress and enhance presence (Kabat-Zinn, 1994).",
+        // 360-degree feedback
+        "Use structured 360 surveys to uncover blind spots in decision style.",
+        // Assertiveness training
+        "Role-play delegation conversations to balance authority with support.",
       ],
       collaboration: [
-        // Inclusive decision checkpoints
-        "Embed regular team feedback loops (e.g., “Start-Stop-Continue”) to balance decisiveness with input (Edmondson, 2012).",
-        // Delegation frameworks
-        "Use RACI matrices to distribute responsibilities and empower team members (Project Management Institute).",
+        // Psychological safety (Edmondson, 1999)
+        "Hold “failure post-mortems” to normalize risk-taking and learn from mistakes.",
+        // RACI clarity
+        "Define Roles, Accountability, Consulted, and Informed to prevent confusion.",
+        // Active listening circles
+        "Rotate facilitation so every team member is heard before directives are given.",
+        // Inclusive decision-making
+        "Use small-group SWOT analyses before final decisions to build buy-in.",
+        // Appreciative inquiry
+        "Start meetings by highlighting recent successes to fuel positive momentum.",
       ],
       career: [
-        // Executive leadership tracks
-        "Aim for roles in operations management, project leadership, or C-suite where decisive action is valued.",
-        // High-stakes environments
-        "Consider fields like emergency services, military, or turnaround consulting where authority drives results.",
+        // Executive tracks
+        "COO, Operations Lead, or Project Director roles capitalize on your decisive nature.",
+        // Crisis management
+        "Emergency services or turnaround consulting where rapid authority is crucial.",
+        // Military or defense leadership
+        "Environments valuing chain-of-command and clear directives.",
+        // Sports team captaincy
+        "Leadership in competitive team settings leverages your drive.",
+        // Corporate restructuring
+        "Lead M&A integration or process-reengineering initiatives.",
       ],
     },
   },
@@ -220,22 +272,40 @@ export const archetypes: Archetype[] = [
     ],
     applications: {
       growth: [
-        // Social network analysis
-        "Map your network and schedule time for high-leverage connections (Burt, 2000).",
-        // Persuasion science
-        "Apply principles from Cialdini’s Influence (2006): reciprocity and social proof to strengthen rapport.",
+        // Social network theory (Burt, 2000)
+        "Map your network to identify key connectors and schedule regular check-ins.",
+        // Cialdini’s principles (2006)
+        "Practice reciprocity and social proof when persuading stakeholders.",
+        // Active empathetic listening (Rogers, 1957)
+        "Reflect back feelings during conversations to deepen rapport.",
+        // Emotional contagion research
+        "Leverage positive affect—smile and posture—to boost group mood (Hatfield et al., 1994).",
+        // Storytelling skills
+        "Develop narrative competence by practicing “problem → solution → impact” pitches.",
       ],
       collaboration: [
-        // Community-building rituals
-        "Host regular informal gatherings (e.g., “coffee huddles”) to maintain strong team bonds.",
+        // Community of practice (Wenger, 1998)
+        "Establish informal communities to share best practices and build cohesion.",
         // Boundary setting
-        "Use SMART goals to keep people-pleasing in check and maintain productivity (Doran, 1981).",
+        "Use time-boxed “office hours” to manage availability and prevent overcommitment.",
+        // Meeting facilitation
+        "Structure meetings with clear roles (facilitator, timekeeper, scribe) to stay on track.",
+        // Peer coaching circles
+        "Host small peer groups where members both support and hold each other accountable.",
+        // Feedback culture
+        "Train teams in SBI (Situation-Behavior-Impact) feedback model for clarity.",
       ],
       career: [
-        // Customer-facing roles
-        "Explore positions in sales, public relations, or community management where empathy drives performance.",
-        // Culture and engagement functions
-        "Consider roles in People & Culture or brand advocacy to leverage your networking strengths.",
+        // Sales and customer success
+        "Roles where relationship-building and persuasion are central.",
+        // Community management
+        "Lead user groups, forums, or brand ambassador programs.",
+        // Public relations
+        "Use your empathy to craft messages that resonate widely.",
+        // Internal communications
+        "Drive culture and engagement through compelling storytelling.",
+        // Talent acquisition
+        "Interview and onboard with a personal touch that attracts top talent.",
       ],
     },
   },
@@ -276,22 +346,40 @@ export const archetypes: Archetype[] = [
     ],
     applications: {
       growth: [
-        // Scenario planning
-        "Run “what-if” workshops to anticipate multiple futures (Schwartz, 1991).",
-        // Decision-matrix practice
-        "Use Eisenhower grids or weighted decision matrices for key personal & professional choices.",
+        // Scenario planning (Schwartz, 1991)
+        "Develop 3–5 plausible future scenarios for key decisions.",
+        // Decision matrix (Kepner-Tregoe)
+        "Use weighted scoring models to evaluate complex options.",
+        // Backcasting
+        "Start with desired future end-state and work backward to today’s actions.",
+        // Mental models mapping
+        "Draw causal loop diagrams to reveal leverage points in systems thinking.",
+        // Critical path analysis
+        "Identify and focus on tasks that determine project duration (CPM).",
       ],
       collaboration: [
-        // Storyboarding roadmaps
-        "Visualize strategic plans via Gantt or strategy maps so stakeholders grasp the big picture.",
-        // Cross-functional forums
-        "Lead monthly cross-team strategy reviews to align tactical execution with long-term goals.",
+        // Strategy workshops
+        "Lead facilitated SWOT and PESTLE sessions to align teams on context.",
+        // Visual roadmaps
+        "Use Gantt charts or Kanban boards to share timelines and dependencies.",
+        // Balanced scorecards
+        "Translate strategy into KPIs across Finance, Customer, Process, Learning.",
+        // Cross-functional councils
+        "Organize regular cross-dept strategy reviews to maintain alignment.",
+        // Cognitive diversity
+        "Invite contrarian viewpoints to stress-test strategic plans (Nemeth, 1995).",
       ],
       career: [
-        // Strategic planning roles
-        "Target roles like corporate strategist, management consultant, or business architect.",
-        // Policy and advisory
-        "Consider think-tank or policy positions to shape broader organizational direction.",
+        // Management consulting
+        "Strategic advisory roles in top firms or internal COE functions.",
+        // Corporate strategy
+        "Lead corporate development or strategic planning teams.",
+        // Policy analysis
+        "Shape public policy or regulatory strategy in government or NGOs.",
+        // Venture capital
+        "Assess startup strategies and market fit for investment decisions.",
+        // Research think-tanks
+        "Deep-dive into industry trends and advise on long-term positioning.",
       ],
     },
   },
@@ -332,22 +420,40 @@ export const archetypes: Archetype[] = [
     ],
     applications: {
       growth: [
-        // Meta-analysis habit
-        "Practice summary writing: condense research into one-page briefs to build synthesis skills.",
-        // Information boundaries
-        "Set strict time limits when researching to avoid analysis paralysis (O’Reilly, 2018).",
+        // Meta-cognitive summaries
+        "Write 300-word abstracts of key papers to hone distillation skills.",
+        // Stop-rule heuristics
+        "Set clear stopping criteria (e.g., 20 articles) to avoid endless research loops.",
+        // Synthesis frameworks
+        "Use frameworks like PICO (medicine) or SWOT for structured insight generation.",
+        // Lateral thinking
+        "Practice “random entry” provocations to break analytical blind spots (De Bono, 1967).",
+        // Data triangulation
+        "Combine qualitative and quantitative sources for robust conclusions.",
       ],
       collaboration: [
-        // Research showcases
-        "Run “lunch & learn” sessions to present findings succinctly to non-specialists.",
-        // Data-visualization tools
-        "Use dashboards (e.g., Tableau) to translate deep analysis into actionable insights.",
+        // “Lunch & Learn” demos
+        "Host short sessions to share key findings and foster data literacy.",
+        // Infographics creation
+        "Translate complex data into visual stories using tools like Power BI.",
+        // Research sprints
+        "Run focused 2-day research sprints with cross-functional teams.",
+        // Peer review circles
+        "Establish peer feedback groups to critique and refine reports.",
+        // Methodological training
+        "Offer internal workshops on research methods and ethical standards.",
       ],
       career: [
-        // Research and audit roles
-        "Pursue roles in R&D, compliance, or academic research where rigor and ethics are key.",
-        // Data science paths
-        "Consider data-analyst or epidemiology positions, leveraging your analytical rigor.",
+        // Academic research
+        "Publish in peer-reviewed journals to establish subject-matter authority.",
+        // Compliance & audit
+        "Roles in finance or healthcare where rigorous verification is vital.",
+        // Data science & analytics
+        "Data-scientist or BI roles drawing on your deep analytical rigor.",
+        // UX research
+        "Lead user-research initiatives combining ethics and insight.",
+        // Policy evaluation
+        "Assess program outcomes in government or NGO settings.",
       ],
     },
   },
@@ -387,22 +493,40 @@ export const archetypes: Archetype[] = [
     ],
     applications: {
       growth: [
-        // Conflict-resolution frameworks
-        "Learn and apply Thomas-Kilmann methods to address conflict styles effectively (TKI, 1974).",
-        // Mindfulness training
-        "Practice active mindfulness (Kabat-Zinn, 1994) to manage emotional contagion.",
+        // Thomas-Kilmann Conflict Mode Instrument
+        "Learn to flex between competing, avoiding, accommodating, collaborating, and compromising (TKI).",
+        // Mindfulness (Kabat-Zinn, 1994)
+        "Daily mindfulness practice to center yourself before engaging in conflict.",
+        // Perspective-taking
+        "Use role-play exercises to deliberately adopt others’ viewpoints (Galinsky et al., 2008).",
+        // Nonviolent Communication
+        "Apply NVC’s observation-feeling-need-request model to clear communication (Rosenberg, 2003).",
+        // Emotional granularity
+        "Label emotions precisely to avoid conflating different feelings (Barrett, 2001).",
       ],
       collaboration: [
-        // Facilitation best practices
-        "Use structured facilitation techniques (e.g., Liberating Structures) to guide group consensus.",
+        // Liberating Structures
+        "Use facilitation formats like “1-2-4-All” to ensure every voice is heard (Lipmanowicz & McCandless).",
         // Empathy mapping
-        "Lead empathy mapping workshops so teams truly understand user or stakeholder perspectives.",
+        "Lead workshops to map stakeholder thoughts, feelings, and needs to foster understanding.",
+        // Mediation frameworks
+        "Apply the five-step mediation process: opening, issue framing, option generation, negotiation, closure.",
+        // Safe space creation
+        "Establish ground rules and confidentiality to encourage honest dialogue.",
+        // Group norms setting
+        "Co-author team charters that clarify values and conflict protocols.",
       ],
       career: [
-        // HR and coaching roles
-        "Consider HR business partner, organizational development, or professional coaching positions.",
-        // Mediation and counseling
-        "Explore roles in dispute resolution services or as a certified mediator.",
+        // HR Business Partner
+        "Coach leaders and design interventions that enhance organizational health.",
+        // Professional mediator
+        "Certify through recognized bodies (e.g., CPR, IMI) and practice in dispute resolution.",
+        // Organizational development
+        "Lead culture-change initiatives and team-building programs.",
+        // Counseling & coaching
+        "Consider roles in EAP, life coaching, or rehabilitation settings.",
+        // Community engagement
+        "Design and facilitate community forums and stakeholder dialogues.",
       ],
     },
   },
@@ -437,22 +561,40 @@ export const archetypes: Archetype[] = [
     ],
     applications: {
       growth: [
-        // Adaptive compliance
-        "Schedule quarterly innovation reviews to balance stability with necessary change.",
-        // Cognitive flexibility
-        "Practice scenario-based exercises to build comfort with ambiguity (Fleeson & Jayawickreme, 2015).",
+        // Fleeson & Jayawickreme (2015)
+        "Practice situational role-plays to build adaptability under ambiguity.",
+        // Adaptive self-regulation
+        "Use cyclical PDSA (Plan-Do-Study-Act) to iterate processes without chaos.",
+        // Cognitive reframing
+        "Apply cognitive restructuring to reinterpret uncertainty as opportunity (Beck, 1976).",
+        // Policy review cycles
+        "Schedule quarterly reviews to update procedures based on new data.",
+        // Stress inoculation
+        "Gradually expose yourself to controlled ambiguity to build tolerance (Meichenbaum, 1985).",
       ],
       collaboration: [
-        // Standard-setting workshops
-        "Lead sessions to document and refine SOPs, ensuring both clarity and buy-in.",
-        // Exception protocols
-        "Establish flexible exception processes so the team can innovate within guardrails.",
+        // SOP co-creation
+        "Involve cross-functional teams in writing SOPs to ensure practicality and buy-in.",
+        // Exception dashboards
+        "Create live dashboards highlighting deviations so teams can adapt without full rewrites.",
+        // Compliance gamification
+        "Incentivize adherence through recognition programs or “compliance champions.”",
+        // Scenario drills
+        "Run tabletop exercises to test protocols under simulated crises.",
+        // Feedback loops
+        "Establish rapid debrief processes so lessons learned feed back into standards.",
       ],
       career: [
-        // Operations and compliance
-        "Look for roles in quality assurance, regulatory affairs, or operations management.",
+        // Quality assurance
+        "Roles in QA, regulatory affairs, and audit leverage your reliability.",
         // Program management
-        "Consider program manager positions overseeing large-scale implementations.",
+        "Lead large, complex programs where process discipline is critical.",
+        // Compliance leadership
+        "Oversee governance and risk frameworks in financial or healthcare sectors.",
+        // Facilities management
+        "Manage operations where maintenance and safety are paramount.",
+        // Standards development
+        "Work with ISO or industry bodies to draft and maintain global standards.",
       ],
     },
   },
@@ -488,22 +630,40 @@ export const archetypes: Archetype[] = [
     ],
     applications: {
       growth: [
-        // Role rotation
-        "Periodically switch project roles to deepen specialization and avoid overextension.",
+        // Role diversification
+        "Rotate through different project roles quarterly to deepen expertise without losing breadth.",
+        // Time-blocking
+        "Allocate alternating deep-work and context-switch blocks to protect focus (Newport, 2016).",
         // Boundary setting
-        "Use time-blocking to allocate “deep focus” and “context-shifting” periods (Cal Newport).",
+        "Use explicit “in/out of role” signals (e.g., calendar color-coding) to manage expectations.",
+        // Systems thinking
+        "Map end-to-end value streams to identify integration points (Goldratt, 1990).",
+        // Self-compassion
+        "Practice self-compassion exercises to prevent burnout from overextension (Neff, 2003).",
       ],
       collaboration: [
-        // Bridge-builder rituals
-        "Host “cross-pollination” sessions where different functions share insights.",
-        // Resource coordination
-        "Implement simple RACI charts so teams know how you connect points.",
+        // Cross-pollination forums
+        "Host monthly “show-and-tell” where teams share successes and lessons learned.",
+        // RACI coordination
+        "Develop lightweight RACI or DACI charts to clarify decision roles across functions.",
+        // Integration stand-ups
+        "Run brief daily cross-team syncs to surface blockers and dependencies.",
+        // Knowledge repositories
+        "Maintain a centralized wiki for process flows and integration guidelines.",
+        // Mentoring circles
+        "Lead triad mentoring groups to share best practices and build collective intelligence.",
       ],
       career: [
-        // Program or portfolio management
-        "Aim for program manager or product owner roles that leverage your adaptability.",
-        // Consulting and generalist roles
-        "Consider management consulting or internal strategy roles requiring broad oversight.",
+        // Program/portfolio management
+        "Manage multi-project portfolios in PMO or PM roles that demand broad oversight.",
+        // Product owner
+        "Serve as the single point of integration between business stakeholders and delivery teams.",
+        // Management consulting
+        "Advise clients on systems integration and process alignment.",
+        // Enterprise architecture
+        "Design organizational or IT architectures that unify diverse components.",
+        // Generalist leadership
+        "Act as a Chief of Staff or operations lead in dynamic, high-change environments.",
       ],
     },
   },
