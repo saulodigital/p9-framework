@@ -1,8 +1,8 @@
 import React from "react";
-import { PracticalApplications } from "@/lib/archetypes";
+import { Applications } from "@/lib/archetypes";
 
 interface Props {
-  apps: PracticalApplications;
+  apps: Applications;
 }
 
 export default function PracticalApplications({ apps }: Props) {

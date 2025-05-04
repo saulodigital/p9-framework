@@ -31,9 +31,16 @@ export default function Questionnaire() {
       return;
     }
     setIsSubmitting(true);
+
+    // Save to localStorage + analytics
     try {
       localStorage.setItem("answers", JSON.stringify(answers));
-      await track("Completed Questionnaire");
+      try {
+        // fire-and-forget analytics; ignore errors
+        track("Completed Questionnaire");
+      } catch (e) {
+        console.warn("Analytics track failed:", e);
+      }
       router.push("/results");
     } finally {
       setIsSubmitting(false);
