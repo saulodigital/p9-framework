@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { computeProfile } from "@/lib/scoring";
 import { Archetype } from "@/lib/archetypes";
+import PracticalApplications from "@/components/PracticalApplications";
 import LabelFeedback from "@/components/LabelFeedback";
 import PersonalizedInsights from "@/components/PersonalizedInsights";
 
@@ -47,6 +48,7 @@ export default function Results() {
         ))}
       </ul>
 
+      <PracticalApplications apps={primary.applications} />
       <PersonalizedInsights archetype={primary} />
       <LabelFeedback label={primary.slug} />
     </div>
