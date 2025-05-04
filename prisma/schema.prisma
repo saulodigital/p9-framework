@@ -1,0 +1,51 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "node_modules/@prisma/client"
+}
+
+/// User profiles and assessment data
+/// User roles can be "user" or "admin"
+model User {
+  id              String    @id @default(cuid())
+  name            String?
+  email           String?   @unique
+  image           String?
+  archetype       String?
+  answers         Json?
+  createdAt       DateTime  @default(now())
+  completedAt     DateTime?
+  lastAssessedAt  DateTime?
+  sessions        Int       @default(1)
+  role            String    @default("user")
+  
+  // Optional relations
+  feedbacks       LabelFeedback[]
+}
+
+/// Stores feedback on label clarity
+model LabelFeedback {
+  id        String   @id @default(cuid())
+  label     String
+  rating    Int
+  createdAt DateTime @default(now())
+  
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+}
+
+/// Audit results for clustering runs
+model ClusterAudit {
+  id         String   @id @default(cuid())
+  k          Int
+  centroids  Json
+  createdAt  DateTime @default(now())
+}
+
+// Add additional models below as needed
