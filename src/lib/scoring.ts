@@ -4,31 +4,31 @@ import { questions } from "@/app/questionnaire/components/questions";
 import { archetypes, Archetype } from "./archetypes";
 import { Dimension } from "@/lib/archetypeCentroids";
 
-/** 1. Map 1–7 Likert to –3…+3 */
+/** 1) Map 1–7 Likert → –3…+3 */
 export function mapLikert(raw: number): number {
   return raw - 4;
 }
 
-/** 2. Compute each HEXACO/Cognitive/Motivational/Adaptability dimension average. */
+/** 2) Dimension averages */
 export function computeDimensionAverages(
   answers: Record<string, number>
 ): Record<Dimension, number> {
   const buckets: Partial<Record<Dimension, number[]>> = {};
-  questions.forEach(q => {
+  for (const q of questions) {
     const dim = q.dimension as Dimension;
     let raw = answers[q.id] ?? 4;
     if (q.reverse) raw = 8 - raw;
     (buckets[dim] ||= []).push(mapLikert(raw));
-  });
-  const avgs: Record<Dimension, number> = {} as any;
-  (Object.keys(buckets) as Dimension[]).forEach(dim => {
+  }
+  const avgs = {} as Record<Dimension, number>;
+  for (const dim of Object.keys(buckets) as Dimension[]) {
     const vals = buckets[dim]!;
     avgs[dim] = vals.reduce((a, b) => a + b, 0) / vals.length;
-  });
+  }
   return avgs;
 }
 
-/** 3. Archetype → which dimensions define it */
+/** 3) Archetype definition */
 export const archetypeDimensions: Record<Archetype["slug"], Dimension[]> = {
   visionary: ["Openness", "Extraversion", "Adaptability"],
   innovator: ["Openness", "Conscientiousness", "Adaptability"],
@@ -40,11 +40,11 @@ export const archetypeDimensions: Record<Archetype["slug"], Dimension[]> = {
   guardian: ["Conscientiousness", "Emotionality", "Agreeableness"],
   integrator: [
     "Openness", "Extraversion", "Conscientiousness",
-    "Agreeableness", "Emotionality", "Adaptability"
+    "Agreeableness", "Emotionality", "Adaptability",
   ],
 };
 
-/** 4. Compute mean score per archetype */
+/** 4) Mean score per archetype */
 export function computeArchetypeScores(
   dimAvgs: Record<Dimension, number>
 ): Record<string, number> {
@@ -57,55 +57,53 @@ export function computeArchetypeScores(
   return scores;
 }
 
-/** 5. Label thresholds (on the –3…+3 scale, i.e. –100…+100%) */
+/** 5) Thresholds on the –3…+3 scale */
 const T = {
-  PRIMARY_MIN: 0.7,       // ≥ 70% of max possible
-  MULTI_MIN: 0.50,        // 50–70% → Multifaceted
-  SECONDARY_MIN: 0.30,    // ≥ 30% → Secondary/supporting
-  DUALCORE_GAP: 0.15,     // top two within 15% → Dual-Core
+  PRIMARY_MIN: 0.7,     // ≥70 %
+  MULTI_MIN: 0.50,      // 50–70 %
+  SECONDARY_MIN: 0.30,  // ≥30 %
+  DUALCORE_GAP: 0.15,   // ≤15 % gap
 };
 
-/** 6. Full profile with scores & tiered labels */
+/** 6) Final profile + primaryLabel */
+export interface ProfileItem extends Archetype {
+  score: number;
+  rank: number;
+  primaryLabel?: string;
+}
+
 export function computeProfile(
   answers: Record<string, number>
-): Array<Archetype & { score: number; label: string; rank: number }> {
+): ProfileItem[] {
   const dimAvgs = computeDimensionAverages(answers);
   const raw = computeArchetypeScores(dimAvgs);
-  // Build sorted list
-  const list = archetypes
+
+  // Sort by mean score descending
+  const sorted = archetypes
     .map(a => ({ ...a, score: raw[a.slug] ?? 0 }))
     .sort((a, b) => b.score - a.score);
 
-  // Extract top three
-  const [first, second, third] = list;
+  const [first, second, third] = sorted;
   const s1 = first.score, s2 = second.score, s3 = third.score;
 
-  // Decide category
-  let label: string;
+  // Decide the primary label
+  let primaryLabel: string;
   if (s1 >= T.PRIMARY_MIN) {
-    // Primary clear winner
-    label = first.name;
-  } else if (
-    // within DUALCORE_GAP → Dual-Core
-    s1 - s2 <= T.DUALCORE_GAP &&
-    s2 >= T.SECONDARY_MIN
-  ) {
-    label = `Dual-Core ${first.name}–${second.name}`;
+    primaryLabel = first.name;
+  } else if (s1 - s2 <= T.DUALCORE_GAP && s2 >= T.SECONDARY_MIN) {
+    primaryLabel = `Dual-Core ${first.name}–${second.name}`;
   } else if (s1 >= T.MULTI_MIN && s2 >= T.SECONDARY_MIN) {
-    // Multifaceted: a strong top and reasonable runner-up
-    label = `Multifaceted ${first.name}`;
+    primaryLabel = `Multifaceted ${first.name}`;
   } else if (s1 <= T.MULTI_MIN && s2 >= T.SECONDARY_MIN && s3 >= T.SECONDARY_MIN) {
-    // Generalist: no strong peak, three comparable scores
-    label = `Generalist ${first.name}–${second.name}–${third.name}`;
+    primaryLabel = `Generalist ${first.name}–${second.name}–${third.name}`;
   } else {
-    // Otherwise fall back to primary
-    label = first.name;
+    primaryLabel = first.name;
   }
 
-  // Attach label & rank
-  return list.map((a, i) => ({
+  // Attach rank & label only to the top archetype
+  return sorted.map((a, i) => ({
     ...a,
     rank: i + 1,
-    label: i === 0 ? label : "",
+    primaryLabel: i === 0 ? primaryLabel : undefined,
   }));
 }
