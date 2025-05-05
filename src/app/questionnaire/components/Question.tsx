@@ -1,4 +1,3 @@
-// app/questionnaire/components/Question.tsx
 "use client";
 
 import React from "react";
@@ -7,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
 export interface QuestionProps {
   id: string;
   text: string;
-  value: number;
+  value: number; // 0 = no answer yet
   onChange: (id: string, value: number) => void;
 }
 
@@ -27,35 +26,41 @@ export default function Question({
   value,
   onChange,
 }: QuestionProps) {
+  // Treat 0 as “no selection”
+  const selected = value > 0 ? String(value) : undefined;
+
   return (
     <div className="mb-8">
-      <label htmlFor={id} className="block mb-2 font-medium">
-        {text}
-      </label>
+      <fieldset>
+        <legend id={`${id}-legend`} className="block mb-2 font-medium">
+          {text}
+        </legend>
 
-      <RadioGroup
-        id={id}
-        value={String(value)}
-        onValueChange={(val) => onChange(id, Number(val))}
-        className="grid grid-cols-7 gap-4"
-        aria-label={text}
-      >
-        {ticks.map((t) => (
-          <div key={t.value} className="flex flex-col items-center">
-            <RadioGroupItem value={String(t.value)} />
-            <span className="sr-only">{t.label}</span>
-          </div>
-        ))}
-      </RadioGroup>
-
-      {/* Descriptive labels */}
-      <div className="mt-2 grid grid-cols-7 justify-items-center text-[9px] text-gray-500">
-        {ticks.map((t) => (
-          <div key={t.value} className="whitespace-nowrap">
-            {t.label}
-          </div>
-        ))}
-      </div>
+        <RadioGroup
+          name={id}
+          value={selected}
+          onValueChange={(val) => onChange(id, Number(val))}
+          className="grid grid-cols-7 gap-2"
+          required
+          aria-labelledby={`${id}-legend`}
+        >
+          {ticks.map((t) => (
+            <label
+              key={t.value}
+              htmlFor={`${id}-${t.value}`}
+              className="flex flex-col items-center cursor-pointer"
+            >
+              <RadioGroupItem
+                id={`${id}-${t.value}`}
+                value={String(t.value)}
+              />
+              <span className="mt-1 text-[9px] text-gray-500 text-center">
+                {t.label}
+              </span>
+            </label>
+          ))}
+        </RadioGroup>
+      </fieldset>
     </div>
   );
 }

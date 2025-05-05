@@ -16,6 +16,7 @@ declare module "next-auth" {
    * Returned by `callbacks.jwt` and `getToken`
    */
   interface User extends DefaultUser {
+    /** Persisted in your Prisma schema */
     role?: string;
   }
 }

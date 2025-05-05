@@ -1,9 +1,10 @@
 export type Dimension =
-  | "Openness"
-  | "Extraversion"
-  | "Conscientiousness"
-  | "Agreeableness"
+  | "Honesty-Humility"
   | "Emotionality"
+  | "Extraversion"
+  | "Agreeableness"
+  | "Conscientiousness"
+  | "Openness"
   | "Adaptability";
 
 export interface Centroid {

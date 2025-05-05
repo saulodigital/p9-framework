@@ -1,22 +1,31 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 const ReassessmentBanner: React.FC = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [due, setDue] = useState(false);
 
   useEffect(() => {
-    if (!session) return;
-    fetch("/api/user/last-assessed")
-      .then((res) => res.json())
-      .then((data) => setDue(data.due))
-      .catch((err) =>
-        console.error("Failed to fetch reassessment status:", err)
-      );
-  }, [session]);
+    // Only run once session is loaded and authenticated
+    if (status !== "authenticated") return;
 
-  if (!session || !due) {
+    fetch("/api/user/last-assessed") // should return { due: boolean }
+      .then((res) => res.json())
+      .then((data) => {
+        if (typeof data.due === "boolean") {
+          setDue(data.due);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch reassessment status:", err);
+      });
+  }, [status]);
+
+  // If not logged in or not due yet, don’t render anything
+  if (status !== "authenticated" || !due) {
     return null;
   }
 
@@ -24,10 +33,11 @@ const ReassessmentBanner: React.FC = () => {
     <div className="bg-yellow-100 p-4 rounded mb-4 text-center">
       <p>
         It’s been a while since your last assessment.{" "}
-        <Link href="/questionnaire">
-          <a className="underline font-semibold">
-            Re-take the P9 Assessment
-          </a>
+        <Link
+          href="/questionnaire"
+          className="underline font-semibold text-blue-600 hover:text-blue-800"
+        >
+          Re-take the P9 Assessment
         </Link>{" "}
         to keep your profile up to date.
       </p>

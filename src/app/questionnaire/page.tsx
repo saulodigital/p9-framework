@@ -1,12 +1,13 @@
-// app/questionnaire/page.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { track } from "@vercel/analytics";
 import Question from "./components/Question";
 import { questions } from "./components/questions";
+
+const ANIM = { duration: 0.3 };
 
 export default function Questionnaire() {
   const router = useRouter();
@@ -15,50 +16,56 @@ export default function Questionnaire() {
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
-  const handleAnswerChange = (id: string, value: number) => {
-    setAnswers((prev) => ({ ...prev, [id]: value }));
-    const idx = questions.findIndex((q) => q.id === id);
-    if (idx === currentIndex && currentIndex < total - 1) {
-      setCurrentIndex((ci) => ci + 1);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (Object.keys(answers).length !== total) {
-      alert("Please answer all questions before submitting.");
-      return;
-    }
-    setIsSubmitting(true);
-
-    // Save to localStorage + analytics
-    try {
-      localStorage.setItem("answers", JSON.stringify(answers));
-      try {
-        // fire-and-forget analytics; ignore errors
-        track("Completed Questionnaire");
-      } catch (e) {
-        console.warn("Analytics track failed:", e);
+  const handleAnswerChange = useCallback(
+    (id: string, value: number) => {
+      setAnswers((prev) => ({ ...prev, [id]: value }));
+      const idx = questions.findIndex((q) => q.id === id);
+      if (idx === currentIndex && currentIndex < total - 1) {
+        setCurrentIndex(idx + 1);
       }
+    },
+    [currentIndex, total]
+  );
+
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (Object.keys(answers).length !== total) {
+        setFormError("Please answer all questions before submitting.");
+        return;
+      }
+      setFormError(null);
+      setIsSubmitting(true);
+
+      // Persist answers client‐side
+      window.localStorage.setItem("answers", JSON.stringify(answers));
+
+      // Fire‐and‐forget analytics (no promise returned)
+      try {
+        track("Completed Questionnaire");
+      } catch (err) {
+        console.warn("Analytics track failed:", err);
+      }
+
+      // Navigate away
       router.push("/results");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    },
+    [answers, router, total]
+  );
 
-  // Only questions up to current
+  // Get only up to the current question
   const visible = questions.slice(0, currentIndex + 1);
-
   const allAnswered = Object.keys(answers).length === total;
 
   return (
     <form onSubmit={handleSubmit} className="p-4 max-w-2xl mx-auto">
       <h2 className="text-2xl font-bold mb-4">Personality Assessment</h2>
 
-      {/* Top bar: progress on left, submit on right */}
+      {/* Progress */}
       <div className="flex justify-between items-center mb-6">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600" aria-live="polite">
           Question {currentIndex + 1} of {total}
         </p>
         <button
@@ -70,21 +77,26 @@ export default function Questionnaire() {
         </button>
       </div>
 
+      {formError && (
+        <p className="mb-4 text-red-600" role="alert">
+          {formError}
+        </p>
+      )}
+
       <AnimatePresence initial={false}>
         {visible
           .slice()
           .reverse()
           .map((q, revIdx) => {
-            const originalIdx = visible.length - 1 - revIdx;
-            const isActive = originalIdx === currentIndex;
-
+            const idx = visible.length - 1 - revIdx;
+            const isActive = idx === currentIndex;
             return (
               <motion.div
                 key={q.id}
                 initial={{ y: isActive ? -10 : 0, opacity: isActive ? 1 : 0.6 }}
                 animate={{ y: 0, opacity: isActive ? 1 : 0.5 }}
                 exit={{ y: 10, opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={ANIM}
                 className={isActive ? "mb-8" : "mb-4"}
               >
                 <Question

@@ -1,30 +1,87 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
 import prisma from "@/lib/prisma";
-import { authOptions } from "@/auth";
+
+interface SaveResultsPayload {
+  email: string;
+  archetype: string;
+  answers: Record<string, number>;
+}
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.email) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const { archetype, answers } = await request.json();
+  let payload: SaveResultsPayload;
 
   try {
-    await prisma.user.update({
-      where: { email: session.user.email },
-      data: {
+    payload = await request.json();
+  } catch {
+    return NextResponse.json(
+      { error: "Malformed JSON" },
+      { status: 400 }
+    );
+  }
+
+  const { email, archetype, answers } = payload;
+
+  // Basic validation
+  if (
+    typeof email !== "string" ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  ) {
+    return NextResponse.json(
+      { error: "Invalid email address" },
+      { status: 400 }
+    );
+  }
+  if (typeof archetype !== "string") {
+    return NextResponse.json(
+      { error: "Invalid archetype" },
+      { status: 400 }
+    );
+  }
+  if (
+    typeof answers !== "object" ||
+    answers === null ||
+    Array.isArray(answers) ||
+    !Object.values(answers).every((v) => typeof v === "number")
+  ) {
+    return NextResponse.json(
+      { error: "Invalid answers payload" },
+      { status: 400 }
+    );
+  }
+
+  const now = new Date();
+  try {
+    await prisma.user.upsert({
+      where: { email },
+      update: {
         archetype,
         answers,
-        lastAssessedAt: new Date(),
-        completedAt: new Date(),
+        lastAssessedAt: now,
+        completedAt: now,
         sessions: { increment: 1 },
       },
+      create: {
+        email,
+        archetype,
+        answers,
+        lastAssessedAt: now,
+        completedAt: now,
+        sessions: 1,
+      },
     });
-    return NextResponse.json({ success: true });
+
+    return new NextResponse(
+      JSON.stringify({ success: true }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   } catch (err: any) {
     console.error("Error saving results:", err);
-    return NextResponse.json({ error: "Failed to save results" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to save results" },
+      { status: 500 }
+    );
   }
 }
