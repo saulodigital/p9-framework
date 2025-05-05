@@ -4,9 +4,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Centroid } from "@/lib/archetypeCentroids";
 import { ArchetypeIcon } from "./Icons";
-
-// Dynamically load so we don’t SSR the chart
-const ClientRadar = dynamic(() => import("./ClientRadar"), { ssr: false });
+import ClientRadar from "@/components/ClientRadar";
 
 export interface ArchetypeCardProps {
   slug: string;

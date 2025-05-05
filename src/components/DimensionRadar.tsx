@@ -22,7 +22,13 @@ export default function DimensionRadar({ data }: Props) {
         <RadarChart data={data} outerRadius={120}>
           <PolarGrid />
           <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 10 }} />
-          <PolarRadiusAxis angle={30} domain={[-3, 3]} tickCount={7} />
+          <PolarRadiusAxis
+            angle={30}
+            domain={[-3, 3]}
+            tickCount={7}
+            tick={false}
+            axisLine={false}
+          />
           <Radar
             name="You"
             dataKey="score"

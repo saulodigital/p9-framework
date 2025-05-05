@@ -28,12 +28,10 @@ type ProfileItem = {
 };
 
 export default function ResultsPage() {
-  const [dimData, setDimData] = useState<{ dimension: string; score: number }[]>(
-    []
-  );
+  const [dimData, setDimData] = useState<{ dimension: string; score: number }[]>([]);
   const [profile, setProfile] = useState<ProfileItem[] | null>(null);
 
-  // For “Save Profile” via email
+  // Email‐save state
   const [email, setEmail] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -49,11 +47,11 @@ export default function ResultsPage() {
       Object.entries(dimAvgs).map(([dimension, score]) => ({ dimension, score }))
     );
 
-    // Archetype scores & tiers
-    const raw = computeProfile(answers);
+    // Archetype profile & tiers
+    const rawProfile = computeProfile(answers);
     const SECONDARY = 0.6;
     const SUPPORTING = 0.3;
-    const clean: ProfileItem[] = raw.map((a, i) => ({
+    const cleaned: ProfileItem[] = rawProfile.map((a, i) => ({
       slug: a.slug,
       name: a.name,
       description: a.description,
@@ -71,32 +69,35 @@ export default function ResultsPage() {
               ? "Supporting"
               : "Minor",
     }));
-    setProfile(clean);
+    setProfile(cleaned);
   }, []);
 
-  if (!profile) return <div>Loading your results…</div>;
+  if (!profile) {
+    return <div>Loading your results…</div>;
+  }
   const primary = profile[0];
 
-  // Save handler
-  const handleSave = async () => {
+  // Save handler (plain function, not a hook)
+  async function handleSave() {
     setSaving(true);
     try {
-      const answers = JSON.parse(
-        window.localStorage.getItem("answers") || "{}"
-      );
+      const answers = JSON.parse(window.localStorage.getItem("answers") || "{}");
       const res = await fetch("/api/save-results", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, archetype: primary.slug, answers }),
       });
-      if (!res.ok) throw new Error(await res.text());
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text);
+      }
       setSaved(true);
     } catch (err: any) {
       alert("Failed to save: " + err.message);
     } finally {
       setSaving(false);
     }
-  };
+  }
 
   return (
     <div className="max-w-2xl mx-auto p-4 space-y-8">
@@ -124,7 +125,7 @@ export default function ResultsPage() {
         >
           {saved ? "Saved ✓" : saving ? "Saving…" : "Save Profile"}
         </button>
-        <WalletConnect />
+        <WalletConnect email={email} archetype={primary.slug} />
       </section>
 
       {/* Dimension Scores & Radar */}
@@ -156,6 +157,21 @@ export default function ResultsPage() {
             Learn More
           </Link>
         </div>
+      </section>
+
+      {/* Other Archetypes (compact list) */}
+      <section>
+        <h3 className="text-lg font-medium mb-2 text-gray-600">
+          Other Archetypes
+        </h3>
+        <ul className="flex flex-wrap gap-4 text-sm">
+          {profile.slice(1).map((a) => (
+            <li key={a.slug} className="flex items-center space-x-1">
+              <span className="font-medium">{a.name}:</span>
+              <span className="text-gray-500">{a.score.toFixed(2)}</span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* Tailored Content */}

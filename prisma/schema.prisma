@@ -2,9 +2,6 @@
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
-  
-  // Look in .env.local as well as .env
-  envFile  = ".env.local"
 }
 
 generator client {
@@ -31,6 +28,7 @@ model User {
   lastAssessedAt DateTime?
   sessions       Int       @default(1)
   role           Role      @default(USER)
+  ethAddress     String?   @unique
 
   feedbacks      LabelFeedback[]
 
