@@ -43,11 +43,12 @@ model User {
 /// Record multiple assessment runs per user
 model Assessment {
   id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id])
+  testId    String   @unique
   userId    String
   archetype String
   answers   Json
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 /// Stores feedback on label clarity

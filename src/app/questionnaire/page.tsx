@@ -1,8 +1,10 @@
+// app/questionnaire/page.tsx
 "use client";
 
 import React, { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { nanoid } from "nanoid";
 import { track } from "@vercel/analytics";
 import Question from "./components/Question";
 import { questions } from "./components/questions";
@@ -39,18 +41,27 @@ export default function Questionnaire() {
       setFormError(null);
       setIsSubmitting(true);
 
-      // Persist answers client‐side
-      window.localStorage.setItem("answers", JSON.stringify(answers));
-
-      // Fire‐and‐forget analytics (no promise returned)
       try {
-        track("Completed Questionnaire");
-      } catch (err) {
-        console.warn("Analytics track failed:", err);
-      }
+        // Generate and persist testId
+        const testId = nanoid();
+        window.localStorage.setItem("testId", testId);
 
-      // Navigate away
-      router.push("/results");
+        // Persist answers
+        window.localStorage.setItem("answers", JSON.stringify(answers));
+
+        // Analytics (fire-and-forget)
+        try {
+          track("Completed Questionnaire");
+        } catch (err) {
+          // Silently ignore analytics failures?
+          console.warn("Analytics track failed:", err);
+        }
+
+        // Navigate to results
+        router.push("/results");
+      } finally {
+        setIsSubmitting(false);
+      }
     },
     [answers, router, total]
   );
@@ -60,10 +71,14 @@ export default function Questionnaire() {
   const allAnswered = Object.keys(answers).length === total;
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Personality Assessment</h2>
+    <form
+      onSubmit={handleSubmit}
+      className="p-4 max-w-2xl mx-auto"
+      aria-invalid={!!formError}
+    >
+      <h2 className="text-2xl font-bold mb-4">P9 Assessment</h2>
 
-      {/* Progress */}
+      {/* Progress & Submit */}
       <div className="flex justify-between items-center mb-6">
         <p className="text-sm text-gray-600" aria-live="polite">
           Question {currentIndex + 1} of {total}
@@ -77,12 +92,14 @@ export default function Questionnaire() {
         </button>
       </div>
 
+      {/* Validation Error */}
       {formError && (
         <p className="mb-4 text-red-600" role="alert">
           {formError}
         </p>
       )}
 
+      {/* Questions */}
       <AnimatePresence initial={false}>
         {visible
           .slice()

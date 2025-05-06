@@ -6,16 +6,19 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { computeProfile } from "@/lib/scoring";
+import { useTestId } from "@/hooks/useTestId";
 
 export function SaveBanner() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [saving, setSaving] = useState(false);
+  const testId = useTestId();
 
+  // While NextAuth is initializing
   if (status === "loading") return null;
 
-  // 1) Not signed in
-  if (!session) {
+  // Not signed in, prompt login
+  if (!session?.user?.email) {
     return (
       <button
         onClick={() =>
@@ -28,38 +31,53 @@ export function SaveBanner() {
     );
   }
 
-  // 2) Signed in → Save to history
+  // Core save logic, with idempotent testId
+  const saveToServer = async () => {
+    if (!testId) {
+      throw new Error("No test identifier found");
+    }
+
+    const answers = JSON.parse(
+      window.localStorage.getItem("answers") || "{}"
+    ) as Record<string, number>;
+
+    const prof = computeProfile(answers);
+    if (prof.length === 0) {
+      throw new Error("You haven’t completed the test yet.");
+    }
+
+    const res = await fetch("/api/save-results", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        testId,
+        email: session.user.email,
+        archetype: prof[0].slug,
+        answers,
+      }),
+    });
+
+    const payload = await res.json();
+    if (!res.ok) {
+      throw new Error(payload.error || res.statusText);
+    }
+    return payload.alreadySaved as boolean;
+  };
+
+  // Saving handler
   const handleSave = async () => {
+    if (saving) return;
     setSaving(true);
     try {
-      // 1) load the raw answers
-      const answers = JSON.parse(
-        window.localStorage.getItem("answers") || "{}"
-      ) as Record<string, number>;
-
-      // 2) recompute the profile here to get fresh updated data
-      const prof = computeProfile(answers);
-      if (prof.length === 0) {
-        throw new Error("No profile available");
+      const already = await saveToServer();
+      if (already) {
+        toast("You’ve already saved this result.");
+      } else {
+        toast.success("Saved to your profile!");
       }
-      const primarySlug = prof[0].slug;
-
-      // 3) call the API
-      const res = await fetch("/api/save-results", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: session.user.email,
-          archetype: primarySlug,
-          answers,
-        }),
-      });
-      if (!res.ok) throw new Error(await res.text());
-
-      toast.success("Saved to your Profile!");
-      // optionally: router.push("/profile/history");
+      // e.g. router.push("/profile/history")
     } catch (err: any) {
-      console.error(err);
+      console.error("Save failed:", err);
       toast.error(err.message || "Couldn’t save your results");
     } finally {
       setSaving(false);
@@ -70,9 +88,12 @@ export function SaveBanner() {
     <button
       onClick={handleSave}
       disabled={saving}
-      className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
+      className={`
+        px-4 py-2 rounded text-white
+        ${saving ? "bg-gray-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"}
+      `}
     >
-      {saving ? "Saving..." : "Save"}
+      {saving ? "Saving..." : "Save Results"}
     </button>
   );
 }
