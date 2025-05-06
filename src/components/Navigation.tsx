@@ -3,7 +3,7 @@
 import Link from 'next/link';
 
 import { useSession, signIn, signOut } from "next-auth/react";
-import { Logomark, LogomarkLightmode } from '@/components/Icons';
+import { Logomark } from '@/components/Icons';
 
 export function AuthButton() {
   const { data: session } = useSession();
@@ -15,10 +15,9 @@ export function AuthButton() {
 
 export default function Navigation() {
   return (
-    <header>
-      <Link href='/' className='flex gap-1'>
-        <LogomarkLightmode height='2.5rem' width='2.5rem'/>
-        <span>Plebs</span>
+    <header className='flex items-center justify-space-between p-4 mb-12 w-fullitems-center backdrop-blur-lg bg-black/85 text-gray-100 flex flex-col text-base h-full left-0 leading-relaxed min-h-screen fixed top-0 w-[76px]'>
+      <Link href='/' className="flex justify-center h-8 w-8 leading-relaxed">
+        <Logomark />
       </Link>
       <AuthButton />
     </header>

@@ -1,7 +1,6 @@
-// app/questionnaire/page.tsx
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { nanoid } from "nanoid";
@@ -10,15 +9,41 @@ import Question from "./components/Question";
 import { questions } from "./components/questions";
 
 const ANIM = { duration: 0.3 };
+const STORAGE_ANS = "answers";
+const STORAGE_IDX = "currentIndex";
+const STORAGE_TEST = "testId";
 
 export default function Questionnaire() {
   const router = useRouter();
   const total = questions.length;
 
-  const [answers, setAnswers] = useState<Record<string, number>>({});
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // Hydrate answers from localStorage
+  const [answers, setAnswers] = useState<Record<string, number>>(() => {
+    try {
+      return JSON.parse(window.sessionStorage.getItem(STORAGE_ANS) || "{}");
+    } catch {
+      return {};
+    }
+  });
+
+  // Hydrate currentIndex (clamp to [0, total-1])
+  const [currentIndex, setCurrentIndex] = useState<number>(() => {
+    const saved = parseInt(window.sessionStorage.getItem(STORAGE_IDX) || "", 10);
+    if (!isNaN(saved) && saved >= 0 && saved < total) return saved;
+    return 0;
+  });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+
+  // Whenever answers or index change, persist them
+  useEffect(() => {
+    window.sessionStorage.setItem(STORAGE_ANS, JSON.stringify(answers));
+  }, [answers]);
+
+  useEffect(() => {
+    window.sessionStorage.setItem(STORAGE_IDX, String(currentIndex));
+  }, [currentIndex]);
 
   const handleAnswerChange = useCallback(
     (id: string, value: number) => {
@@ -42,12 +67,9 @@ export default function Questionnaire() {
       setIsSubmitting(true);
 
       try {
-        // Generate and persist testId
-        const testId = nanoid();
-        window.localStorage.setItem("testId", testId);
-
-        // Persist answers
-        window.localStorage.setItem("answers", JSON.stringify(answers));
+        // Generate and store testId once
+        const testId = window.sessionStorage.getItem(STORAGE_TEST) || nanoid();
+        window.sessionStorage.setItem(STORAGE_TEST, testId);
 
         // Analytics (fire-and-forget)
         try {
