@@ -1,5 +1,39 @@
 import React from "react";
 
+export const Logomark = (props) => (
+  <svg
+    className="logomark darkmode"
+    width="100%"
+    height="100%"
+    viewBox="0 0 189 256"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <g stroke="#fff" strokeWidth="10" strokeLinejoin="round">
+      <path d="M115.446 94.3634V251H5V94.3634C5 45.0429 45.0416 5 94.3621 5C143.683 5 183.726 45.0429 183.726 94.3634V182.72H73.2796V94.3634C73.2796 82.7266 82.7266 73.2796 94.3621 73.2796C105.999 73.2796 115.446 82.7266 115.446 94.3634Z"/>
+      <path d="M149.585 94.3629V216.859H39.1392V94.3629C39.1392 63.8847 63.8834 39.1396 94.3617 39.1396C124.84 39.1396 149.585 63.8847 149.585 94.3629Z"/>
+    </g>
+  </svg>
+)
+
+export const LogomarkLightmode = (props) => (
+  <svg
+    className="logomark lightmode"
+    width="100%"
+    height="100%"
+    viewBox="0 0 190 256"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <g stroke="#000" strokeWidth="12" strokeLinejoin="round">
+      <path d="M115.548 94.6369V250H6V94.6369C6 45.7173 45.716 6 94.6356 6C143.555 6 183.272 45.7173 183.272 94.6369V182.276H73.7244V94.6369C73.7244 83.0946 83.0947 73.7245 94.6356 73.7245C106.178 73.7245 115.548 83.0946 115.548 94.6369Z" />
+      <path d="M149.41 94.6366V216.137H39.8617V94.6366C39.8617 64.4061 64.4048 39.8623 94.6353 39.8623C124.866 39.8623 149.41 64.4061 149.41 94.6366Z"/>
+    </g>
+  </svg>
+)
+
 export const ArchetypeIcon: Record<string, React.ReactNode> = {
   visionary: (
     <svg

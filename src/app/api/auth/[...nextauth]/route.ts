@@ -1,3 +1,5 @@
+// app/api/auth/[...nextauth]/route.ts
+
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
@@ -7,22 +9,27 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
+    // Add magic links later
   ],
   callbacks: {
     async session({ session, user }) {
-      // Assuming you extended the SessionUser type to include `role`
       if (session.user) {
+        session.user.id = user.id;
         session.user.role = user.role;
       }
       return session;
     },
   },
-  // Optional: add pages, debug, etc.
-  // pages: { signIn: "/auth/signin" },
-  // debug: process.env.NODE_ENV === "development",
+  debug: process.env.NODE_ENV === "development",
+  // Optionally: Later configure pages, session strategy, etc.
+  pages: {
+    signIn: "/auth/signin",
+  },
 };
 
-export default NextAuth(authOptions);
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };

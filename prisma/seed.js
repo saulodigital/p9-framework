@@ -1,13 +1,21 @@
-const { PrismaClient } = require("@prisma/client");
+// prisma/seed.js
+
+const { PrismaClient, Role } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
   const raw = process.env.ADMIN_EMAILS;
   if (!raw) {
-    throw new Error("ADMIN_EMAILS env var not set (e.g. 'agent@plebs.net,outie@eplebs.net,innie@plebs.net')");
+    throw new Error(
+      "ADMIN_EMAILS env var not set; e.g. ADMIN_EMAILS='agent@plebs.net,outie@plebs.net'"
+    );
   }
 
-  const emails = raw.split(",").map((e) => e.trim()).filter(Boolean);
+  const emails = raw
+    .split(",")
+    .map((e) => e.trim())
+    .filter((e) => e.length > 0);
+
   if (emails.length === 0) {
     throw new Error("ADMIN_EMAILS was empty after parsing");
   }
@@ -16,16 +24,17 @@ async function main() {
     try {
       const user = await prisma.user.upsert({
         where: { email },
-        update: { role: "ADMIN" },     // or "admin" if you use a String enum
+        update: { role: Role.ADMIN },
         create: {
           email,
-          role: "ADMIN",
+          role: Role.ADMIN,
           name: email.split("@")[0],
         },
       });
       console.log(`✅ Admin ensured: ${user.email} (id: ${user.id})`);
-    } catch (e) {
-      console.error(`❌ Failed to upsert admin ${email}:`, e);
+    } catch (err) {
+      console.error(`❌ Failed to upsert admin ${email}:`, err);
+      process.exitCode = 1;
     }
   }
 }

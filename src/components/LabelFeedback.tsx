@@ -16,7 +16,7 @@ const LabelFeedback: React.FC<LabelFeedbackProps> = ({ label }) => {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/feedback/label", {
+      const res = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ label, rating }),

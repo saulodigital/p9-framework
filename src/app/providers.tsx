@@ -1,8 +1,10 @@
 'use client';
 
+import { SessionProvider } from "next-auth/react"; 
 import { ReactNode, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import WagmiProvider from "@/components/WagmiProvider";
+import { Toaster } from "sonner";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -17,5 +19,14 @@ export function Providers({ children }: ProvidersProps) {
     isHome ? bodyClasses.add('home') : bodyClasses.remove('home');
   }, [isHome]);
 
-  return <WagmiProvider>{children}</WagmiProvider>;
+  return (
+    <>
+      <Toaster position="top-right" />
+      <SessionProvider>
+        <WagmiProvider>
+          {children}
+        </WagmiProvider>
+      </SessionProvider>
+    </>
+  )
 }

@@ -6,10 +6,10 @@ declare module "next-auth" {
    * Returned by `useSession`, `getSession`, etc.
    */
   interface Session extends DefaultSession {
-    user: {
-      /** The user's role, e.g. 'user' or 'admin' */
-      role?: string;
-    } & DefaultSession["user"];
+    user: DefaultSession["user"] & {
+      id: string;
+      role: "USER" | "ADMIN";
+    };
   }
 
   /**
@@ -17,6 +17,6 @@ declare module "next-auth" {
    */
   interface User extends DefaultUser {
     /** Persisted in your Prisma schema */
-    role?: string;
+    role: "USER" | "ADMIN";
   }
 }
