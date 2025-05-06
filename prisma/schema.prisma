@@ -45,10 +45,10 @@ model Assessment {
   id        String   @id @default(cuid())
   testId    String   @unique
   userId    String
+  user      User     @relation(fields: [userId], references: [id])
   archetype String
   answers   Json
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
 }
 
 /// Stores feedback on label clarity

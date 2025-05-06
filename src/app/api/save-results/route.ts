@@ -7,7 +7,7 @@ export interface SaveResultsPayload {
   archetype: string;
   answers: Record<string, number>;
   ethAddress?: string;
-}
+};
 
 export async function POST(request: Request) {
   let payload: SaveResultsPayload;
@@ -78,48 +78,48 @@ export async function POST(request: Request) {
   const now = new Date();
 
   try {
-    // Upsert user record (increment sessionCount)
-    const user = await prisma.user.upsert({
-      where: { email },
-      update: {
-        archetype,
-        answers,
-        lastAssessedAt: now,
-        completedAt: now,
-        sessionCount: { increment: 1 },
-        ...(ethAddress && { ethAddress }),
-      },
-      create: {
-        email,
-        archetype,
-        answers,
-        lastAssessedAt: now,
-        completedAt: now,
-        sessionCount: 1,
-        ethAddress,
-      },
+    await prisma.$transaction(async (tx) => {
+      // Upsert user record (increment sessionCount)
+      const user = await tx.user.upsert({
+        where: { email },
+        update: {
+          archetype,
+          answers,
+          lastAssessedAt: now,
+          completedAt: now,
+          sessionCount: { increment: 1 },
+          ...(ethAddress && { ethAddress }),
+        },
+        create: {
+          email,
+          archetype,
+          answers,
+          lastAssessedAt: now,
+          completedAt: now,
+          sessionCount: 1,
+          ethAddress,
+        },
+      });
+
+      // Idempotency check if assessment with testId already exists
+      const existing = await tx.assessment.findUnique({
+        where: { testId },
+      });
+
+      // If doesn't exist create assessment
+      if (!existing) {
+        await tx.assessment.create({
+          data: {
+            testId,
+            userId: user.id,
+            archetype,
+            answers,
+          },
+        });
+      }
     });
 
-    // Check if assessment with this testId already exists
-    const existing = await prisma.assessment.findUnique({
-      where: { userId_testId: { userId: user.id, testId } },
-    });
-
-    if (existing) {
-      return NextResponse.json({ success: true, alreadySaved: true });
-    };
-    
-    // Create the new assessment
-    await prisma.assessment.create({
-      data: {
-        testId,
-        userId: user.id,
-        archetype,
-        answers,
-      },
-    });
-
-    // Return success
+    // Return success response
     return NextResponse.json({
       success: true,
       alreadySaved: false
