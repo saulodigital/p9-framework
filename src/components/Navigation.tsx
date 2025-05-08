@@ -1,8 +1,9 @@
-"use client"; 
+"use client";
 
 import Link from 'next/link';
 import AuthButton from '@/components/SignIn';
 import { Logomark } from '@/components/Icons';
+import { ConnectAndSIWE } from './ConnectAndSIWE';
 
 export default function Navigation() {
   return (
@@ -13,6 +14,8 @@ export default function Navigation() {
         </Link>
       </header>
       <AuthButton />
+      <ConnectAndSIWE />
+
     </>
   );
 };
