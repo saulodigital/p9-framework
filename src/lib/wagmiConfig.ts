@@ -7,7 +7,7 @@ export const cbWalletConnector = coinbaseWallet({
   appName: "Plebs",
   preference: {
     keysUrl: "https://keys-dev.coinbase.com/connect",
-    options: "all",
+    options: "smartWalletOnly",
   },
   subAccounts: {
     enableAutoSubAccounts: true,
