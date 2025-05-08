@@ -5,39 +5,34 @@ import { parseEther, toHex } from "viem";
 
 export const cbWalletConnector = coinbaseWallet({
   appName: "Plebs",
-  preference: "all",
+  preference: {
+    keysUrl: "https://keys-dev.coinbase.com/connect",
+    options: "all",
+  },
+  subAccounts: {
+    enableAutoSubAccounts: true,
+    defaultSpendLimits: {
+      84532: [
+        {
+          token: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+          allowance: toHex(parseEther("0.01")),
+          period: 864000,
+        },
+      ],
+      8453: [
+        {
+          token: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+          allowance: toHex(parseEther("0.01")),
+          period: 864000,
+        },
+      ],
+    },
+  },
 });
 
 export const config = createConfig({
   chains: [baseSepolia, base],
-  connectors: [
-    coinbaseWallet({
-      appName: "Plebs",
-      preference: {
-        keysUrl: "https://keys-dev.coinbase.com/connect",
-        options: "smartWalletOnly",
-      },
-      subAccounts: {
-        enableAutoSubAccounts: true,
-        defaultSpendLimits: {
-          84532: [
-            {
-              token: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-              allowance: toHex(parseEther("0.01")),
-              period: 864000,
-            },
-          ],
-          8453: [
-            {
-              token: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-              allowance: toHex(parseEther("0.01")),
-              period: 864000,
-            },
-          ],
-        },
-      },
-    }),
-  ],
+  connectors: [cbWalletConnector],
   storage: createStorage({
     storage: cookieStorage,
   }),
