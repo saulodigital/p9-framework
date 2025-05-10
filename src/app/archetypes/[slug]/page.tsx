@@ -1,4 +1,3 @@
-import { Metadata } from "next";
 import Link from "next/link";
 import { archetypes } from "@/lib/archetypes";
 import { archetypeCentroids, Centroid } from "@/lib/archetypeCentroids";
@@ -6,22 +5,7 @@ import ArchetypeRadar from "@/components/ArchetypeRadar";
 import { ArchetypeAvatars } from "@/components/ArchetypeAvatars";
 import type { Dimension } from "@/lib/archetypeCentroids";
 
-interface ArchetypePageProps {
-  params: { slug: string };
-}
-
-export function generateMetadata({
-  params,
-}: ArchetypePageProps): Metadata {
-  const arch = archetypes.find((a) => a.slug === params.slug);
-  return {
-    title: arch ? `${arch.name} • P9 Archetypes` : "Archetype Not Found • P9",
-    description:
-      arch?.description || "Discover your P9 archetype profile and insights.",
-  };
-}
-
-export default function ArchetypePage({ params }: ArchetypePageProps) {
+export default async function ArchetypePage({ params }: { params: { slug: string } }) {
   const archetype = archetypes.find((a) => a.slug === params.slug);
   if (!archetype) {
     return (

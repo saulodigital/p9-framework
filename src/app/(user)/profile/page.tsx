@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 
 import prisma from "@/lib/prisma";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 import { computeDimensionAverages, computeProfile } from "@/lib/scoring";
 import type { Dimension } from "@/lib/archetypeCentroids";
 import type { ProfileItemWithExtras } from "@/lib/types";
@@ -81,7 +81,6 @@ export default async function ProfilePage() {
           dimData={dimData}
           primary={primary}
           assessments={assessmentsForClient}
-          answers={latest.answers as Record<string, number>}
         />
       ) : (
         <p>You haven’t taken a test yet.</p>
