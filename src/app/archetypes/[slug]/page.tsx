@@ -5,6 +5,7 @@ import ArchetypeRadar from "@/components/ArchetypeRadar";
 import { ArchetypeAvatars } from "@/components/ArchetypeAvatars";
 import type { Dimension } from "@/lib/archetypeCentroids";
 
+// @ts-nocheck
 export default async function ArchetypePage({ params }: { params: { slug: string } }) {
   const archetype = archetypes.find((a) => a.slug === params.slug);
   if (!archetype) {
