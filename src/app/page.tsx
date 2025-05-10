@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArchetypeGrid } from "@/components/ArchetypeGrid";
-import { BgHome } from "@/components/Backgrounds";
 import { archetypes } from "@/lib/archetypes";
 import { Button } from "@/components/ui/Button";
 

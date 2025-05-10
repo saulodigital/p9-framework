@@ -46,8 +46,9 @@ export default function WalletConnect({ email, archetype }: WalletConnectProps) 
                 });
                 if (!res.ok) throw new Error(await res.text());
                 toast.success("Transaction submitted!");
-              } catch (err: any) {
-                toast.error(err.message || "Transaction failed");
+              } catch (err: unknown) {
+                const message = err instanceof Error ? err.message : "Transaction failed";
+                toast.error(message);
               } finally {
                 setMinting(false);
               }

@@ -3,8 +3,8 @@
 import { PropsWithChildren, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createConfig, http, WagmiProvider as _WagmiProvider } from 'wagmi';
-import { base, mainnet, optimism } from 'wagmi/chains';
-import { injected, metaMask, safe, walletConnect } from 'wagmi/connectors';
+import { base, mainnet } from 'wagmi/chains';
+import { injected, metaMask, safe } from 'wagmi/connectors';
 
 export const config = createConfig({
   chains: [mainnet, base],
