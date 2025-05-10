@@ -26,12 +26,10 @@ export default function ProfileClient({
   dimData,
   primary,
   assessments,
-  answers,
 }: {
   dimData: { dimension: Dimension; score: number }[];
   primary: ProfileItemWithExtras | null;
   assessments: { answers: Record<string, number>; archetype: string; createdAt: string }[];
-  answers: Record<string, number>;
 }) {
   const allTraitNames = dimData.map((d) => d.dimension);
   const [selectedTrait, setSelectedTrait] = useState<Dimension>(allTraitNames[0]);

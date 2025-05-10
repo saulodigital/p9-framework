@@ -29,7 +29,7 @@ const STORAGE_ANS = "p9_answers";
 
 export default function ResultsPage() {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [answers, setAnswers] = useState<Record<string, number> | null>(null);
 
   // 1) Load answers from sessionStorage on mount

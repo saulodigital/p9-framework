@@ -16,7 +16,11 @@ export function Providers({ children }: ProvidersProps) {
 
   useEffect(() => {
     const bodyClasses = document.body.classList;
-    isHome ? bodyClasses.add('home') : bodyClasses.remove('home');
+    if (isHome) {
+      bodyClasses.add('home');
+    } else {
+      bodyClasses.remove('home');
+    }
   }, [isHome]);
 
   return (

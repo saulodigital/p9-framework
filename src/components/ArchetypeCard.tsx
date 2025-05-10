@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Centroid } from "@/lib/archetypeCentroids";
-import { archetypes, type Archetype } from "@/lib/archetypes";
+import { archetypes } from "@/lib/archetypes";
 import { ArchetypeAvatars, type ArchetypeSlug } from "./ArchetypeAvatars";
 import ArchetypeRadar from "@/components/ArchetypeRadar";
 import { Plus } from '@/components/Icons';

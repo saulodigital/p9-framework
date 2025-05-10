@@ -1,7 +1,5 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
-import type { Archetype } from "@/lib/archetypes";
+
 import { ArchetypeGrid } from "@/components/ArchetypeGrid";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";

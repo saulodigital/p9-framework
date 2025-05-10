@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/Dialog";
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { computeAssessmentScores } from "@/lib/assessment";
 
 interface Assessment {
@@ -10,7 +9,7 @@ interface Assessment {
   archetype: string;
   createdAt: string;
   dimensionScores?: Record<string, number>;
-  answers?: any;
+  answers?: Record<string, number>;
 }
 
 interface Props {
@@ -20,8 +19,10 @@ interface Props {
 function AssessmentDialog({ assessment }: { assessment: Assessment }) {
   const isFlat = assessment?.answers && typeof assessment.answers === "object" && !Array.isArray(assessment.answers);
   const dimScores = useMemo(() => {
-    return isFlat ? computeAssessmentScores(assessment.answers).dimData : [];
-  }, [assessment]);
+    return isFlat && assessment.answers
+      ? computeAssessmentScores(assessment.answers).dimData
+      : [];
+  }, [assessment, isFlat]);
 
   return (
     <Dialog>
@@ -55,14 +56,6 @@ function AssessmentDialog({ assessment }: { assessment: Assessment }) {
 }
 
 export default function HistoryTable({ assessments }: Props) {
-  const [selected, setSelected] = useState<Assessment | null>(null);
-
-  const isFlatAnswerMap = selected?.answers && typeof selected.answers === "object" && !Array.isArray(selected.answers);
-
-  const dimScores = useMemo(() => {
-    return isFlatAnswerMap ? Object.entries(computeAssessmentScores(selected!.answers).dimData).map(([dimension, score]) => ({ dimension, score })) : [];
-  }, [selected]);
-
   if (assessments.length === 0) {
     return <p>No previous assessments.</p>;
   }

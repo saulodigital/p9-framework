@@ -1,6 +1,6 @@
 "use client";
 
-import { archetypes, type Archetype } from "@/lib/archetypes";
+import type { Archetype } from "@/lib/archetypes";
 import { archetypeCentroids } from "@/lib/archetypeCentroids";
 import { ArchetypeCard } from "./ArchetypeCard";
 import type { ArchetypeSlug } from "./ArchetypeAvatars";

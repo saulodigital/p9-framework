@@ -54,7 +54,7 @@ function groupByDimension(answers: Answers) {
     let raw = answers[q.id] ?? 4;
     if (q.reverse) raw = 8 - raw;
     const value = mapLikert(raw);
-    const weight = typeof (q as any).weight === "number" ? (q as any).weight : 1.0;
+    const weight = (q as { weight?: number }).weight ?? 1.0;
     for (const dim of dims) {
       if (!buckets[dim]) continue;
       buckets[dim].push(value * weight);
