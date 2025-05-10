@@ -1,3 +1,6 @@
+"use client"; 
+
+import { use } from "react"; 
 import Link from "next/link";
 import { archetypes } from "@/lib/archetypes";
 import { archetypeCentroids, Centroid } from "@/lib/archetypeCentroids";
@@ -5,9 +8,13 @@ import ArchetypeRadar from "@/components/ArchetypeRadar";
 import { ArchetypeAvatars } from "@/components/ArchetypeAvatars";
 import type { Dimension } from "@/lib/archetypeCentroids";
 
-// @ts-expect-error Next.js handles params typing automatically
-export default async function Page({ params }: { params: { slug: string } }) {
-  const archetype = archetypes.find((a) => a.slug === params.slug);
+
+type Params = Promise<{ slug: string }>;
+
+export default function Page({ params }: { params: Params }) {
+  const { slug } = use(params);
+  
+  const archetype = archetypes.find((a) => a.slug === slug);
   if (!archetype) {
     return (
       <main className="p-6 text-center">
