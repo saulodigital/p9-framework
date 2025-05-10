@@ -5,8 +5,8 @@ import ArchetypeRadar from "@/components/ArchetypeRadar";
 import { ArchetypeAvatars } from "@/components/ArchetypeAvatars";
 import type { Dimension } from "@/lib/archetypeCentroids";
 
-// @ts-nocheck
-export default async function ArchetypePage({ params }: { params: { slug: string } }) {
+// @ts-expect-error Next.js handles params typing automatically
+export default async function Page({ params }: { params: { slug: string } }) {
   const archetype = archetypes.find((a) => a.slug === params.slug);
   if (!archetype) {
     return (
