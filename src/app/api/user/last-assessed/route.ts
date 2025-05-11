@@ -9,10 +9,7 @@ export async function GET() {
   // Get the session via NextAuth
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
-    return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   // Fetch last assessment timestamp

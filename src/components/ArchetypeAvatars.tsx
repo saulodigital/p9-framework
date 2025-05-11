@@ -71,11 +71,11 @@ function Signature({ slug }: { slug: ArchetypeSlug }) {
       );
     case "commander":
       return (
-        <>  
+        <>
           <line x1="40" y1="38" x2="32" y2="26" {...sigProps} />
           <line x1="24" y1="38" x2="32" y2="26" {...sigProps} />
           <line x1="24" y1="38" x2="40" y2="38" {...sigProps} />
-        </>  
+        </>
       );
     case "strategist":
       return (

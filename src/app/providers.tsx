@@ -1,18 +1,27 @@
 'use client';
 
-import { SessionProvider } from "next-auth/react"; 
-import { ReactNode, useEffect } from 'react';
+import { SessionProvider } from "next-auth/react";
+import { ReactNode, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import WagmiProvider from "@/components/WagmiProvider";
+import { WagmiProvider } from 'wagmi';
 import { Toaster } from "sonner";
 
-interface ProvidersProps {
-  children: ReactNode;
-}
+import { config } from "@/lib/wagmiConfig"
 
-export function Providers({ children }: ProvidersProps) {
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+
+
+
+
+export function Providers(props: { children: ReactNode }) {
+  const [queryClient] = useState(() => new QueryClient());
+
+
+
   const pathname = usePathname() ?? '/';
   const isHome = pathname === '/';
+
 
   useEffect(() => {
     const bodyClasses = document.body.classList;
@@ -27,8 +36,10 @@ export function Providers({ children }: ProvidersProps) {
     <>
       <Toaster position="top-right" />
       <SessionProvider>
-        <WagmiProvider>
-          {children}
+        <WagmiProvider config={config}>
+          <QueryClientProvider client={queryClient}>
+            {props.children}
+          </QueryClientProvider>
         </WagmiProvider>
       </SessionProvider>
     </>

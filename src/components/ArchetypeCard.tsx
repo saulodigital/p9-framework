@@ -59,7 +59,7 @@ export function ArchetypeCard({ slug, centroid }: Props) {
           </p>
         )}
       </div>
-      
+
       <span className="self-end group-hover:border-zinc-800 group-hover:bg-zinc-800 flex items-center border border-zinc-800 rounded-full justify-center m-0 p-0 transition-all duration-150 ease-in-out h-12 w-12">
         <Plus />
       </span>
